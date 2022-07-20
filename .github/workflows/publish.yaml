@@ -30,4 +30,4 @@ jobs:
 
       - name: docker build
         run: |
-          docker build -t msys2-ltsc2022 --build-arg=OS=ltsc2022 docker
+          docker build -t msys2-ltsc2022 --build-arg=OS=ltsc2022 .
