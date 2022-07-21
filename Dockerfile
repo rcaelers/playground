@@ -43,7 +43,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
-COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
+# COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
 COPY --from=builder C:/msys64 C:/msys64
 
 SHELL ["powershell"]
