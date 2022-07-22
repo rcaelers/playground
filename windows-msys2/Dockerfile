@@ -1,5 +1,10 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS builder
 
+ARG GIT_COMMIT_HASH
+ENV WORKRAVE_CONTAINER_COMMIT=${GIT_COMMIT_HASH}
+# RUN mkdir /workrave && \
+#    echo ${GIT_COMMIT_HASH} > /workrave/container-commit
+
 ARG MSYS_INSTALLER=https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
