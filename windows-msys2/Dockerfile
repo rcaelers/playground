@@ -52,12 +52,13 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022
 # COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
 COPY --from=builder C:/msys64 C:/msys64
 
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     Invoke-WebRequest -UseBasicParsing -Uri https://files.jrsoftware.org/is/6/innosetup-6.2.0.exe -OutFile c:\innosetup.exe; \
     Start-Process ./innosetup.exe -ArgumentList '/VERYSILENT /NORESTART /NOICONS /ALLUSERS /SUPPRESSMSGBOXES /NOCANCEL /SP-' -Wait ; \
     Remove-Item -Path c:\innosetup.exe -Force;
 
-SHELL ["powershell"]
 RUN $env:PATH =  $env:PATH + ';c:\msys64\usr\bin;c:\msys64\mingw64\bin;';   \
     [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine);
 
