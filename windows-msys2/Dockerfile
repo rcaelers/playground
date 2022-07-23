@@ -10,6 +10,7 @@ ARG MSYS_INSTALLER=https://github.com/msys2/msys2-installer/releases/download/ni
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 # "-ExecutionPolicy", "Bypass"
 
+
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     Invoke-WebRequest -UseBasicParsing -uri "$env:MSYS_INSTALLER" -OutFile msys2.exe; \
     .\msys2.exe -y -oC:\; \
@@ -50,6 +51,11 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
 COPY --from=builder C:/msys64 C:/msys64
+
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+    Invoke-WebRequest -UseBasicParsing -Uri https://files.jrsoftware.org/is/6/innosetup-6.2.0.exe -OutFile innosetup.exe; \
+    ./innosetup.exe /VERYSILENT /NORESTART /ALLUSERS; \
+    Remove-Item innosetup.exe ; \
 
 SHELL ["powershell"]
 RUN $env:PATH =  $env:PATH + ';c:\msys64\usr\bin;c:\msys64\mingw64\bin;';   \
