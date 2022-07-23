@@ -10,10 +10,12 @@ ARG MSYS_INSTALLER=https://github.com/msys2/msys2-installer/releases/download/ni
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 # "-ExecutionPolicy", "Bypass"
 
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-    Invoke-WebRequest -UseBasicParsing -Uri https://files.jrsoftware.org/is/6/innosetup-6.2.0.exe -OutFile innosetup.exe; \
-    .\innosetup.exe /VERYSILENT /NORESTART /ALLUSERS; \
-    Remove-Item innosetup.exe
+RUN New-Item -ItemType Directory -Name Modules -Path c:\temp -Force ; `
+
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
+    Invoke-WebRequest -UseBasicParsing -Uri https://files.jrsoftware.org/is/6/innosetup-6.2.0.exe -OutFile c:\innosetup.exe; `
+    Start-Process ./innosetup.exe -ArgumentList '/VERYSILENT /NORESTART /NOICONS /ALLUSERS /SUPPRESSMSGBOXES /NOCANCEL /SP-' -Wait ; `
+    Remove-Item -Path c:\innosetup.exe -Force;
 
 #RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
 #    Invoke-WebRequest -UseBasicParsing -uri "$env:MSYS_INSTALLER" -OutFile msys2.exe; \
