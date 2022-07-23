@@ -47,9 +47,9 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
             zip'; \
     msys 'pacman --noconfirm -Scc';
 
-FROM mcr.microsoft.com/windows/servercore:ltsc2022
+FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
 
-# COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
+ COPY --from=builder C:/Windows/system32/netapi32.dll C:/Windows/system32/netapi32.dll
 COPY --from=builder C:/msys64 C:/msys64
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -63,5 +63,4 @@ RUN $env:PATH =  $env:PATH + ';c:\msys64\usr\bin;c:\msys64\mingw64\bin;';   \
     [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine);
 
 ENV MSYS2_PATH_TYPE=inherit
-
 CMD ["bash.exe", "--login"]
