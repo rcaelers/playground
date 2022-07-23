@@ -10,7 +10,7 @@ ARG MSYS_INSTALLER=https://github.com/msys2/msys2-installer/releases/download/ni
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 # "-ExecutionPolicy", "Bypass"
 
-RUN New-Item -ItemType Directory -Name Modules -Path c:\temp -Force ; `
+RUN New-Item -ItemType Directory -Name Modules -Path c:\temp -Force
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     Invoke-WebRequest -UseBasicParsing -Uri https://files.jrsoftware.org/is/6/innosetup-6.2.0.exe -OutFile c:\innosetup.exe; \
